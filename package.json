@@ -9,12 +9,17 @@
   },
   "dependencies": {
     "axios": "^0.25.0",
+    "body-parser": "^1.19.1",
+    "connect-multiparty": "^2.2.0",
     "core-js": "^3.6.5",
+    "cors": "^2.8.5",
     "element-ui": "^2.15.6",
     "express": "^4.17.2",
     "font-awesome": "^4.7.0",
     "less-loader": "^6.0.0",
     "mongoose": "^6.1.9",
+    "multer": "^1.4.4",
+    "nodemon": "^2.0.15",
     "vue": "^2.6.11",
     "vue-router": "^3.5.3",
     "vuex": "^3.6.2"

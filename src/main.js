@@ -15,7 +15,21 @@ import {
   TableColumn,
   Row,
   Col,
-  Pagination
+  Pagination,
+  Form,
+  FormItem,
+  Select,
+  Option,
+  DatePicker,
+  TimePicker,
+  Upload ,
+  Dialog, 
+  Breadcrumb,
+  BreadcrumbItem,
+  Cascader,
+  Popover,
+  Tree,
+  message
 } from 'element-ui'; //局部引用element
 Vue.component('el-radio-group', RadioGroup);
 Vue.component('el-radio-button', RadioButton);
@@ -30,12 +44,25 @@ Vue.component('el-table-column', TableColumn);
 Vue.component('el-row', Row);
 Vue.component('el-col', Col);
 Vue.component('el-pagination', Pagination);
-
+Vue.component('el-form', Form);
+Vue.component('el-form-item', FormItem);
+Vue.component('el-select', Select);
+Vue.component('el-option', Option);
+Vue.component('el-date-picker', DatePicker);
+Vue.component('el-time-picker', TimePicker);
+Vue.component('el-upload', Upload);
+Vue.component('el-dialog', Dialog);
+Vue.component('el-breadcrumb', Breadcrumb);
+Vue.component('el-breadcrumb-item', BreadcrumbItem);
+Vue.component('el-cascader', Cascader);
+Vue.component('el-popover', Popover);
+Vue.component('el-tree', Tree);
 import './assets/css/common.css' //引入common.css
 import 'font-awesome/css/font-awesome.min.css' //引入font-awesom
 
 import api from './api/index' //引入axios封装文件
 Vue.config.productionTip = false //阻止生产环境提示
+Vue.prototype.$message = message //安装$message
 new Vue({
   render: h => h(App), //动态创建<App></App> 标签
   router, //挂载路由
@@ -43,5 +70,5 @@ new Vue({
   beforeCreate() {
     Vue.prototype.$bus = this //安装全局事件总线
     Vue.prototype.$api = api //安装$api
-  }
+     }
 }).$mount('#app') //挂载app

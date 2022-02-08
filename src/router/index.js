@@ -6,6 +6,7 @@ import Home from '../pages/Home/Home' //Home
 import Login from '../pages/Login/Login' //Login
 import Front from '../pages/Front/Front' //首页内容
 import Commodity from '../pages/Commodity/Commodity' //商品管理
+import CoyAdd from '../pages/Commodity/CoyAdd' //商品管理
 import Specification from '../pages/Specification/Specification' //规格参数
 import Advertise from '../pages/Advertise/Advertise' //广告管理
 import Personal from '../pages/Personal/Personal' //个人管理
@@ -26,75 +27,85 @@ const router = new VueRouter({
             meta: {
                 title: '主页'
             },
-            redirect:{name:'ZhuYeNeiRong'},//   重定向到主页内容
+            redirect: {
+                name: 'ZhuYeNeiRong'
+            }, //   重定向到主页内容
             children: [ //一级子路由
                 {
-                    path:'Front', //主页内容
-                    name:'ZhuYeNeiRong',
-                    component:Front,
+                    path: 'Front', //主页内容
+                    name: 'ZhuYeNeiRong',
+                    component: Front,
                     meta: {
                         title: '主页'
                     },
                 },
                 {
-                    path:'Commodity', //商品
-                    name:'Shangping',
-                    component:Commodity,
+                    path: 'Commodity', //商品
+                    name: 'Shangping',
+                    component: Commodity,
                     meta: {
                         title: '商品管理'
                     },
                 },
                 {
-                    path:'Specification', //规格
-                    name:'GuiGe',
-                    component:Specification,
+                    path: 'Specification', //规格
+                    name: 'GuiGe',
+                    component: Specification,
                     meta: {
                         title: '规格参数'
                     },
                 },
                 {
-                    path:'Advertise', //广告
-                    name:'GuangGao',
-                    component:Advertise,
+                    path: 'Advertise', //广告
+                    name: 'GuangGao',
+                    component: Advertise,
                     meta: {
                         title: '广告管理'
                     },
                 },
                 {
-                    path:'Personal', //个人管理
-                    name:'GeRen',
-                    component:Personal,
+                    path: 'Personal', //个人管理
+                    name: 'GeRen',
+                    component: Personal,
                     meta: {
                         title: '个人管理'
                     },
                 },
                 {
-                    path:'Order', //订单入口
-                    name:'DinDan',
-                    component:Order,
+                    path: 'Order', //订单入口
+                    name: 'DinDan',
+                    component: Order,
                     meta: {
                         title: '订单列表'
                     },
-                    children:[//二级子路由
+                    children: [ //二级子路由
                         {
-                            path:'Goods',
-                            name:'HuoWu',
-                            component:Goods,
-                            meta:{
-                                title:'货物管理'
+                            path: 'Goods',
+                            name: 'HuoWu',
+                            component: Goods,
+                            meta: {
+                                title: '货物管理'
                             }
                         },
                         {
-                            path:'OrderList',
-                            name:'DinDanLieBiao',
-                            component:OrderList,
-                            meta:{
-                                title:'订单页面'
+                            path: 'OrderList',
+                            name: 'DinDanLieBiao',
+                            component: OrderList,
+                            meta: {
+                                title: '订单页面'
                             }
                         }
                     ]
                 },
-        ]
+                {
+                    path: 'CoyAdd', //商品添加
+                    name: 'CoyTianJia',
+                    component: CoyAdd,
+                    meta: {
+                        title: '商品添加'
+                    }
+                }
+            ]
         },
         { //Login
             name: 'DengLu',

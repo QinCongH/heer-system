@@ -4,13 +4,21 @@
     <div class="coyHeader">
       <el-row :gutter="10">
         <el-col :span="20">
-          <el-input v-model="input" placeholder="请输入内容"></el-input>
+          <el-input
+            @change="coySearch"
+            v-model="input"
+            placeholder="请输入关键字"
+          ></el-input>
         </el-col>
         <el-col :span="2">
-          <el-button type="primary" size="mini"> 查询 </el-button>
+          <el-button type="primary" size="mini" @click="coySearch">
+            查询
+          </el-button>
         </el-col>
         <el-col :span="2">
-          <el-button type="primary" size="mini"> 编辑 </el-button>
+          <router-link to="/CoyAdd">
+            <el-button type="primary" size="mini"> 增加 </el-button>
+          </router-link>
         </el-col>
       </el-row>
     </div>
@@ -20,7 +28,13 @@
         <el-col :span="24">
           <el-table :data="tableData" stripe border style="width: 100%">
             <el-table-column type="selection" width=""> </el-table-column>
-            <el-table-column label="商品ID" type="index" width="80">
+            <!-- type="index" 设置id为索引显示，show-overflow-tooltip自动隐藏 -->
+            <el-table-column
+              label="商品ID"
+              prop="_id"
+              width="80"
+              show-overflow-tooltip
+            >
             </el-table-column>
             <el-table-column
               label="商品名称"
@@ -78,8 +92,9 @@ export default {
   data() {
     return {
       input: "",
-      tableData: [],
-      pageSize: 6,  //每页显示的总页数
+      tableData: [], //存储分页查询数据
+      tableAllData: [], //存储全部数据
+      pageSize: 6, //每页显示的总页数
       total: 8, //  数据总数
     };
   },
@@ -88,13 +103,10 @@ export default {
     Pag,
   },
   methods: {
-/*
-1.分页
-*/
-
+    //1.分页
     // 得到了分页页码
     getPage(num) {
-      this.pagFinish(num)
+      this.pagFinish(num);
     },
     //实现分页
     pagFinish(page) {
@@ -117,9 +129,44 @@ export default {
           }
         );
     },
+    // 2.根据名称搜索
+    coySearch() {
+      this.$api
+        .getCoyAllList()
+        .then((res) => {
+          if (res.status === 200) {
+            this.tableData = res.data.data.filter((v) => {
+              //方法1.indexOf
+              //  return v.coyName.indexOf(this.input)!== -1;
+              //方法2.使用includes+if判断全局查找字段,数自需要转换为字符串
+              if (v.coyName.includes(this.input)) {
+                return v.coyName.includes(this.input) == true;
+              } else if (v.coyPicture.includes(this.input)) {
+                return v.coyPicture.includes(this.input) == true;
+              } else if (v.coyPrice.toString().includes(this.input)) {
+                return v.coyPrice.toString().includes(this.input) == true;
+              } else if (v.coyCount.toString().includes(this.input)) {
+                return v.coyCount.toString().includes(this.input) == true;
+              } else if (v.coyKind.includes(this.input)) {
+                return v.coyKind.includes(this.input) == true;
+              } else if (v.coySell.includes(this.input)) {
+                return v.coySell.includes(this.input) == true;
+              } else if (v.coyDescribe.includes(this.input)) {
+                return v.coyDescribe.includes(this.input) == true;
+              } else {
+                return v._id.includes(this.input) == true;
+              }
+            });
+            this.total = this.tableData.length;
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
   },
-  //mounted生命周期函数获取数据渲染到页面
-  mounted() {
+  //created生命周期函数获取数据渲染到页面
+  created() {
     //第一次页数为1
     this.pagFinish(1);
   },

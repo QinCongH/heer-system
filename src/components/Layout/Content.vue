@@ -31,8 +31,10 @@ export default {
   position: absolute;
   width: 85%;
   background: #f1f1f1;
-  height: 93.7vh;
+    height: 93vh;
   transition: 0.33s ease-in-out;
+  top: 0px;
+  overflow: scroll;
 }
 .artWidth {
   width: 95%;
