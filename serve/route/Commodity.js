@@ -57,8 +57,8 @@ router.get('/api/commodity', async (req, res, next) => {
         })
         // 3.增加商品列表
         .post("/api/commodityAdd", async (req, res) => {
-                let commodityAddList = await req.body.data      //存储前端数据
-                if (commodityAddList.coyName.trim().length > 0) {       //如果查询到了coyName则存储
+                let commodityAddList = await req.body.data //存储前端数据
+                if (commodityAddList.coyName.trim().length > 0) { //如果查询到了coyName则存储
                         new Commodity(commodityAddList).save((err) => {
                                 if (err) {
                                         console.log('存储失败');
@@ -72,4 +72,24 @@ router.get('/api/commodity', async (req, res, next) => {
 
 
         })
+        //4.根据id删除
+        .post('/api/commodityDel', async (req, res) => {
+                let coyIdList = await req.body.data
+                console.log(coyIdList);
+                if (coyIdList.length > 0) {
+                        // 删除
+                        let coyDel = await Commodity.remove({
+                                _id: { //$in字符选择查询_id字段带有61f91818353f2b794afef792，61f9190d6a50f6c0160e40a8的条件行
+                                        $in: coyIdList
+                                }
+                        })
+                        if (coyDel) {
+                                res.status=200
+                                res.send({msg:'删除成功'})
+                        }
+                }
+
+
+        })
+
 module.exports = router

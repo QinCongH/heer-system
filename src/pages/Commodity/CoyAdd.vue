@@ -81,7 +81,7 @@
 
           <el-form-item>
             <el-button type="primary" @click="submitForm('coyform')"
-              >确定</el-button
+              >添加</el-button
             >
             <el-button @click="clearForm()">清空</el-button>
           </el-form-item>
@@ -166,31 +166,39 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.$message({
-            message: "恭喜你,添加成功！",
-            type: "success",
-          });
+          //2-1.发送请求 当添加成功时
+          this.$api.postCommodityAdd(this.coyForm).then(
+            (res) => {
+              // /console.log(res);
+              if (res) {
+                //2-2添加成功   弹窗
+                this.$message({
+                  message: "恭喜你,添加成功！",
+                  type: "success",
+                });
+                //2-3如果查询到了路由跳转到商品列表（编程式路由）,.5s跳转
+                setTimeout(() => {
+                  this.$router.push({
+                    name: "Shangping", //后退到命名为Shangping的路由组件
+                  });
+                }, 500);
+              }
+            },
+            (err) => {
+              console.log(err);
+            }
+          );
         } else {
+          //2-2添加失败   弹窗
+          this.$message({
+            message: "qwq格式错误！",
+            type: "error",
+          });
           console.log("error submit!!");
           return false;
         }
       });
       //
-      //2-1.发送请求 当添加成功时
-      this.$api.postCommodityAdd(this.coyForm).then(
-        (res) => {
-          // /console.log(res);
-          if (res) {
-            //2-2如果查询到了路由跳转到商品列表（编程式路由）
-            this.$router.push({
-              name: "Shangping", //后退到命名为Shangping的路由组件
-            });
-          }
-        },
-        (err) => {
-          console.log(err);
-        }
-      );
     },
 
     /*3.清空表字段。不等于空则清空。等于空则不清空 */
@@ -201,7 +209,7 @@ export default {
           this.coyForm[item] = "";
         }
       }
-      // 3-2.添加成功提示
+      // 3-2.清空成功提示
       this.$message({
         message: "表单已清空ovo！",
         type: "success",

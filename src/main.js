@@ -30,7 +30,8 @@ import {
   Popover,
   Tree,
   message,
-  Loading
+  Loading,
+  MessageBox
 } from 'element-ui'; //局部引用element
 Vue.component('el-radio-group', RadioGroup);
 Vue.component('el-radio-button', RadioButton);
@@ -65,6 +66,9 @@ import 'font-awesome/css/font-awesome.min.css' //引入font-awesom
 import api from './api/index' //引入axios封装文件
 Vue.config.productionTip = false //阻止生产环境提示
 Vue.prototype.$message = message //安装$message
+Vue.prototype.$confirm = MessageBox.confirm
+Vue.prototype.$alert = MessageBox.alert
+Vue.prototype.$prompt = MessageBox.prompt
 new Vue({
   render: h => h(App), //动态创建<App></App> 标签
   router, //挂载路由
@@ -72,6 +76,5 @@ new Vue({
   beforeCreate() {
     Vue.prototype.$bus = this //安装全局事件总线
     Vue.prototype.$api = api //安装$api
-     },
-
+     }
 }).$mount('#app') //挂载app

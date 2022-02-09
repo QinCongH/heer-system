@@ -5,5 +5,6 @@ const base={
     coyAllList:'/myApi/api/commodityAll'  ,  //商品 查询全部
     updataImg:'/myApi/api/uploadImg'       , //图片上传
     coyAdd:'/myApi/api/commodityAdd'      ,       //商品增加
+    coyDel:'/myApi/api/commodityDel'    ,//商品删除
 }
 export default base

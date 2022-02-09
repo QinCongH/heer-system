@@ -26,8 +26,6 @@
     <div class="coyTable">
       <el-row :gutter="10">
         <el-col :span="24">
-          <!--加载中 loding -->
-
           <!-- 表格 -->
           <el-table
             :data="tableData"
@@ -37,6 +35,8 @@
             v-loading="coyLoding"
             element-loading-text="拼命加载中"
             element-loading-spinner="el-icon-loading"
+            ref="coyTable"
+            @selection-change="handleSelectionChange"
           >
             <el-table-column type="selection" width=""> </el-table-column>
             <!-- type="index" 设置id为索引显示，show-overflow-tooltip自动隐藏 -->
@@ -89,15 +89,28 @@
             >
             </el-table-column>
             <el-table-column label="操作" width="200" align="center">
-              <template>
+              <template scope="scope">
                 <el-button size="mini" type="info">编辑</el-button>
-                <el-button size="mini" type="danger">删除</el-button>
+                <el-button
+                  size="mini"
+                  type="danger"
+                  @click="coyOpenDel(scope.row._id)"
+                  >删除</el-button
+                >
               </template>
             </el-table-column>
           </el-table>
         </el-col>
       </el-row>
     </div>
+    <!-- 
+      删除按钮
+     -->
+    <div class="coyBtn">
+      <el-button @click="toggleSelection()">取消选择</el-button>
+      <el-button @click="delAllSelection()"> 删除选中 </el-button>
+    </div>
+
     <!-- 3.分页 -->
     <Pag
       :total="total"
@@ -109,6 +122,7 @@
 </template>
 <script>
 import Pag from "../../components/SubLayout/Pag.vue";
+
 export default {
   name: "Commodity",
   data() {
@@ -119,6 +133,8 @@ export default {
       total: 8, //  数据总数
       coyLoding: false, //loding
       pagShow: true, //通过v-if控制pag的销毁和注册
+      coyIdList: [], //存储单个id的数据
+      multipleSelection: [], //存储多选的数据
     };
   },
   components: {
@@ -126,7 +142,6 @@ export default {
   },
   methods: {
     //1-1.分页-得到了分页页码
-    
     getPage(num) {
       // 请求前loging为true
       this.coyLoding = true;
@@ -205,6 +220,121 @@ export default {
           console.log(err);
         });
     },
+    // 3.删除
+    coyOpenDel(coyDelId) {
+      this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+        center: true,
+      })
+        .then(() => {
+          // 3.1 执行调用删除代码
+          this.coyIdList.push(coyDelId);
+          // console.log( this.coyIdList);
+          //   //3-2执行请求
+          this.$api.postCommodityDel(this.coyIdList).then(
+            (res) => {
+              if (res.status === 200) {
+                this.coyIdList = []; //3-3 删除成功列表为初始化空状态
+                this.$message({
+                  type: "success",
+                  message: "删除成功!",
+                });
+                // 3-4. 1秒刷新。刷新前销毁分页
+                setTimeout(() => {
+                  this.pagShow = false;
+                  this.getPage(1);
+                }, 1000);
+              }
+              // console.log(res);
+            },
+            (err) => {
+              console.log(err);
+            }
+          );
+        })
+        .catch(() => {
+          // 3.2 取消删除代码
+          // console.log(this.coyIdList);
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
+    },
+    //4.多选--取消选择
+    toggleSelection(rows) {
+      if (rows) {
+        rows.forEach((row) => {
+          this.$refs.coyTable.toggleRowSelection(row);
+        });
+      } else {
+        this.$refs.coyTable.clearSelection();
+      }
+    },
+    //获取表格选中的数据
+    handleSelectionChange(val) {
+      this.multipleSelection = val;
+    },
+    //4.多选--多选删除
+    delAllSelection() {
+      if (this.multipleSelection.length) {
+        //当选中时执行弹窗
+
+        this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+          center: true,
+        })
+          .then(() => {
+            //执行删除操作代码
+            //----------
+            //方法1.使用for循环
+            // const length = this.multipleSelection.length; //获取多选的长度
+            // let strId = []; //临时存储删除列表
+            // for (let i = 0; i < length; i++) {
+            //   strId.push(this.multipleSelection[i]._id);
+            // }
+            //方法2.使用forEach
+            let strId = []; //临时存储删除列表
+            this.multipleSelection.forEach((v) => {
+              strId.push(v._id);
+            });
+            //------------
+            // console.log(strId);  //得到id列表
+            // 调用接口执行删除
+            if (strId.length > 0) {
+              this.$api
+                .postCommodityDel(strId)
+                .then((res) => {
+                  this.$message({
+                    type: "success",
+                    message: "删除成功!",
+                  });
+                  setTimeout(() => {
+                    this.pagShow = false;
+                    this.getPage(1);
+                  }, 1000);
+                })
+                .catch((err) => {});
+            }
+          })
+          .catch(() => {
+            this.$message({
+              type: "info",
+              message: "已取消删除",
+            });
+          });
+      } else {
+        //没有选中的时候
+        this.$message({
+          type: "info",
+          message: "请选择您要删除的商品!!",
+        });
+      }
+    },
   },
   created() {
     //created生命周期函数获取数据渲染到页面
@@ -239,6 +369,11 @@ export default {
     height: auto;
     border: none;
     outline: none;
+  }
+  .coyBtn {
+    padding: 10px;
+    display: flex;
+    align-items: center;
   }
 }
 </style>

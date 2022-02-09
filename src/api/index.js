@@ -25,6 +25,14 @@ const api = {
         return axios.post(base.coyAdd, {
             data
         })
+    },
+    /*
+        4.商品删除
+    */
+    postCommodityDel(data) {
+        return axios.post(base.coyDel, {
+            data
+        })
     }
 
 }
