@@ -29,7 +29,8 @@ import {
   Cascader,
   Popover,
   Tree,
-  message
+  message,
+  Loading
 } from 'element-ui'; //局部引用element
 Vue.component('el-radio-group', RadioGroup);
 Vue.component('el-radio-button', RadioButton);
@@ -57,9 +58,10 @@ Vue.component('el-breadcrumb-item', BreadcrumbItem);
 Vue.component('el-cascader', Cascader);
 Vue.component('el-popover', Popover);
 Vue.component('el-tree', Tree);
+Vue.use(Loading.directive); //使用loding
 import './assets/css/common.css' //引入common.css
+import './assets/css/elementGlobal.css' //引入common.css
 import 'font-awesome/css/font-awesome.min.css' //引入font-awesom
-
 import api from './api/index' //引入axios封装文件
 Vue.config.productionTip = false //阻止生产环境提示
 Vue.prototype.$message = message //安装$message
@@ -70,5 +72,6 @@ new Vue({
   beforeCreate() {
     Vue.prototype.$bus = this //安装全局事件总线
     Vue.prototype.$api = api //安装$api
-     }
+     },
+
 }).$mount('#app') //挂载app

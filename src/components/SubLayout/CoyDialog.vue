@@ -47,13 +47,6 @@ import Tree from "./CoyTree.vue";
 import CoyUploadImg from './CoyUploadImg.vue'
 export default {
   name: "CoyDialog",
-  data() {
-    return {
-      // 点击弹窗
-      coyKind: "", //商品分类数据
-      dialogVisible1:false,
-    };
-  },
   components: {
     Tree,
     CoyUploadImg
@@ -68,12 +61,6 @@ export default {
       this.$bus.$emit('closeDiaImg',false)
       // console.log(done);
     }
-  },
-  mounted() {
-    this.$bus.$on("sendTree", (v) => {
-      //接收Tree的数据
-      this.coyKind = v.label; //将选择的数据显示在桌面上
-    });
   },
 };
 </script>

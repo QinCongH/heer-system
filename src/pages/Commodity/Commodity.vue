@@ -6,7 +6,7 @@
         <el-col :span="20">
           <el-input
             @change="coySearch"
-            v-model="input"
+            v-model.trim="input"
             placeholder="请输入关键字"
           ></el-input>
         </el-col>
@@ -26,7 +26,18 @@
     <div class="coyTable">
       <el-row :gutter="10">
         <el-col :span="24">
-          <el-table :data="tableData" stripe border style="width: 100%">
+          <!--加载中 loding -->
+
+          <!-- 表格 -->
+          <el-table
+            :data="tableData"
+            stripe
+            border
+            style="width: 100%"
+            v-loading="coyLoding"
+            element-loading-text="拼命加载中"
+            element-loading-spinner="el-icon-loading"
+          >
             <el-table-column type="selection" width=""> </el-table-column>
             <!-- type="index" 设置id为索引显示，show-overflow-tooltip自动隐藏 -->
             <el-table-column
@@ -43,18 +54,25 @@
               show-overflow-tooltip
             >
             </el-table-column>
-            <el-table-column label="商品价格" width="" prop="coyPrice">
+            <el-table-column label="商品价格" width="80" prop="coyPrice">
             </el-table-column>
-            <el-table-column label="商品数量" width="" prop="coyCount">
+            <el-table-column label="商品数量" width="80" prop="coyCount">
             </el-table-column>
-            <el-table-column label="商品类目" width="" prop="coyKind">
+            <el-table-column label="商品类目" width="100" prop="coyKind">
             </el-table-column>
             <el-table-column
               label="商品图片"
               width=""
               prop="coyPicture"
-              show-overflow-tooltip
+              align="center"
             >
+              <template scope="scope">
+                <img
+                  class="colImg"
+                  :src="scope.row.coyPicture || ''"
+                  width="100"
+                />
+              </template>
             </el-table-column>
             <el-table-column
               label="商品卖点"
@@ -81,10 +99,14 @@
       </el-row>
     </div>
     <!-- 3.分页 -->
-    <Pag :total="total" :pageSize="pageSize" @current-change="getPage" />
+    <Pag
+      :total="total"
+      v-if="pagShow"
+      :pageSize="pageSize"
+      @current-change="getPage"
+    />
   </div>
 </template>
-
 <script>
 import Pag from "../../components/SubLayout/Pag.vue";
 export default {
@@ -93,22 +115,24 @@ export default {
     return {
       input: "",
       tableData: [], //存储分页查询数据
-      tableAllData: [], //存储全部数据
       pageSize: 6, //每页显示的总页数
       total: 8, //  数据总数
+      coyLoding: false, //loding
+      pagShow: true, //通过v-if控制pag的销毁和注册
     };
   },
-
   components: {
     Pag,
   },
   methods: {
-    //1.分页
-    // 得到了分页页码
+    //1-1.分页-得到了分页页码
+    
     getPage(num) {
+      // 请求前loging为true
+      this.coyLoding = true;
       this.pagFinish(num);
     },
-    //实现分页
+    //1-2.实现分页
     pagFinish(page) {
       this.$api
         .getCommodityList({
@@ -116,6 +140,9 @@ export default {
         })
         .then(
           (res) => {
+            // 请求成功loding为false，分页显示
+            this.coyLoding = false;
+            this.pagShow = true;
             if (res.data.status === 200) {
               this.tableData = res.data.data;
               this.pageSize = res.data.pageSize; //从数据库获取每页显示的总页数
@@ -129,11 +156,25 @@ export default {
           }
         );
     },
-    // 2.根据名称搜索
+    // 2.搜索
     coySearch() {
+      //如果input为空不进行全部搜索，搜索时执行第一页查询
+      if (this.input.length === 0) {
+        //说明input数据为空
+        // 请求前loging为true
+        this.coyLoding = true;
+        this.pagShow = false; //当空字符搜索时隐藏pagShow
+        this.pagFinish(1);
+        return false;
+      }
+      // 请求前loging为true
+      this.coyLoding = true;
       this.$api
         .getCoyAllList()
         .then((res) => {
+          // 请求成功false
+          this.coyLoding = false;
+          this.pagShow = false; //当搜索成功时隐藏pagShow
           if (res.status === 200) {
             this.tableData = res.data.data.filter((v) => {
               //方法1.indexOf
@@ -165,9 +206,11 @@ export default {
         });
     },
   },
-  //created生命周期函数获取数据渲染到页面
   created() {
-    //第一次页数为1
+    //created生命周期函数获取数据渲染到页面
+    // 请求前loging为true
+    this.coyLoding = true;
+    // 1-3.初始化页面
     this.pagFinish(1);
   },
 };
@@ -190,6 +233,12 @@ export default {
   }
   .el-row {
     margin: 0px !important;
+  }
+  .colImg {
+    max-width: 100%;
+    height: auto;
+    border: none;
+    outline: none;
   }
 }
 </style>

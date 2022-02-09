@@ -58,7 +58,7 @@
               <!-- 
               显示上传成功的图片
              -->
-              <div class="coyImg" v-if="coyForm.coyPicture!=''">
+              <div class="coyImg" v-if="coyForm.coyPicture != ''">
                 <img :src="coyForm.coyPicture" alt="" />
               </div>
               <coy-dialog :dialogVisibleImg="dialogVisibleImg" />
@@ -83,7 +83,7 @@
             <el-button type="primary" @click="submitForm('coyform')"
               >确定</el-button
             >
-            <el-button>清空</el-button>
+            <el-button @click="clearForm()">清空</el-button>
           </el-form-item>
         </el-form>
       </el-col>
@@ -108,7 +108,7 @@ export default {
         coyDescribe: "",
         coyPicture: "", //商品图片上传成功的地址
       },
-      //表单验证
+      //1-1制定表单验证规则
       rules: {
         coyName: [
           { required: true, message: "请输入商品名称", trigger: "blur" },
@@ -162,9 +162,8 @@ export default {
     };
   },
   methods: {
-    // 前端表单验证
+    // 1-2.前端表单验证
     submitForm(formName) {
-      //验证
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.$message({
@@ -176,13 +175,37 @@ export default {
           return false;
         }
       });
-      //发送请求
-       //当添加成功\
-          this.$api.postCommodityAdd(this.coyForm).then((res)=>{
-            console.log(res);
-          },(err)=>{
-            console.log(err);
-          })
+      //
+      //2-1.发送请求 当添加成功时
+      this.$api.postCommodityAdd(this.coyForm).then(
+        (res) => {
+          // /console.log(res);
+          if (res) {
+            //2-2如果查询到了路由跳转到商品列表（编程式路由）
+            this.$router.push({
+              name: "Shangping", //后退到命名为Shangping的路由组件
+            });
+          }
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+    },
+
+    /*3.清空表字段。不等于空则清空。等于空则不清空 */
+    clearForm() {
+      //3-1 等于空则不清空
+      for (let item in this.coyForm) {
+        if (this.coyForm[item].toString().length > 0) {
+          this.coyForm[item] = "";
+        }
+      }
+      // 3-2.添加成功提示
+      this.$message({
+        message: "表单已清空ovo！",
+        type: "success",
+      });
     },
   },
   components: {
@@ -191,10 +214,8 @@ export default {
   mounted() {
     this.$bus.$on("sendTree", (v) => {
       //接收Tree的数据
-
       this.coyForm.coyKind = v.label; //将选择的数据存储在表格
     });
-
     this.$bus.$on("closeDia", (v) => {
       //接收商品选择弹窗的关闭按钮
       this.dialogVisible = v;
@@ -246,11 +267,11 @@ export default {
 }
 .coyImg {
   display: block;
-    width: 250px;
-    height: 170px;
+  width: 250px;
+  height: 170px;
   margin-left: 20px;
   float: right;
-  text-align:center;
+  text-align: center;
   img {
     max-width: 100%;
     height: 100%;

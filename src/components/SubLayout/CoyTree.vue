@@ -113,8 +113,8 @@ export default {
     };
   },
   methods: {
-    handleNodeClick(data) {
-        this.$bus.$emit('sendTree',data)  //发送数据给CoyAdd
+    handleNodeClick(data) {//发送数据给CoyAdd
+        this.$bus.$emit('sendTree',data)  
     },
   },
 };
