@@ -4,7 +4,7 @@
     <el-breadcrumb class="breadCrumb" separator="/">
       <el-breadcrumb-item :to="{ path: '/front' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item to="/Commodity">商品管理</el-breadcrumb-item>
-      <el-breadcrumb-item>商品添加</el-breadcrumb-item>
+      <el-breadcrumb-item>商品{{ editOrAdd }}</el-breadcrumb-item>
     </el-breadcrumb>
 
     <!-- 2.表单 -->
@@ -80,9 +80,9 @@
           </el-form-item>
 
           <el-form-item>
-            <el-button type="primary" @click="submitForm('coyform')"
-              >添加</el-button
-            >
+            <el-button type="primary" @click="submitForm('coyform')">{{
+              editOrAddSubmit
+            }}</el-button>
             <el-button @click="clearForm()">清空</el-button>
           </el-form-item>
         </el-form>
@@ -159,35 +159,22 @@ export default {
       },
       dialogVisible: false, //商品选择内弹窗\
       dialogVisibleImg: false, //商品上传图片内弹窗\
+      getCoyEditId: false, //接收判断是否为编辑页面
     };
   },
   methods: {
-    // 1-2.前端表单验证
+    // 1-2.前端表单验证 增加提交/编辑提交
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          //2-1.发送请求 当添加成功时
-          this.$api.postCommodityAdd(this.coyForm).then(
-            (res) => {
-              // /console.log(res);
-              if (res) {
-                //2-2添加成功   弹窗
-                this.$message({
-                  message: "恭喜你,添加成功！",
-                  type: "success",
-                });
-                //2-3如果查询到了路由跳转到商品列表（编程式路由）,.5s跳转
-                setTimeout(() => {
-                  this.$router.push({
-                    name: "Shangping", //后退到命名为Shangping的路由组件
-                  });
-                }, 500);
-              }
-            },
-            (err) => {
-              console.log(err);
-            }
-          );
+          if (this.$router.currentRoute.query.coyEditDoubt) {
+            //如果为增加页面状态
+            //2-1.发送请求 当添加成功时`---调用函数
+            this.postCommodityAdd();
+          } else {
+            //进行更新提交
+            this.getFormOneUpdata();
+          }
         } else {
           //2-2添加失败   弹窗
           this.$message({
@@ -200,7 +187,30 @@ export default {
       });
       //
     },
-
+    //2-1.发送请求 当添加成功时
+    postCommodityAdd() {
+      this.$api.postCommodityAdd(this.coyForm).then(
+        (res) => {
+          // /console.log(res);
+          if (res) {
+            //2-2添加成功   弹窗
+            this.$message({
+              message: "恭喜你,添加成功！",
+              type: "success",
+            });
+            //2-3如果查询到了路由跳转到商品列表（编程式路由）,.5s跳转
+            setTimeout(() => {
+              this.$router.push({
+                name: "Shangping", //后退到命名为Shangping的路由组件
+              });
+            }, 500);
+          }
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+    },
     /*3.清空表字段。不等于空则清空。等于空则不清空 */
     clearForm() {
       //3-1 等于空则不清空
@@ -215,10 +225,51 @@ export default {
         type: "success",
       });
     },
+    /*  
+      4-1.更新--- 将字段显示在表单
+    */
+    getFormOne() {
+      if (this.$router.currentRoute.query.coyEditDoubt === false) {
+        //如果为编辑
+        let myid = this.$router.currentRoute.query.coyId;
+        this.$api.getCoyOneList({ myid }).then((res) => {
+          this.coyForm = res.data.data;
+        });
+      }
+    },
+    /*
+    4-2.更新提交
+    */
+    getFormOneUpdata() {
+        let myId=this.$router.currentRoute.query.coyId;
+        const data={  //发送的数据
+          myId:myId,
+          myList:this.coyForm
+        }
+        this.$api.getCoyUpdata(data).then(res=>{
+            if(res.status===200){
+                          //2-2添加成功   弹窗
+            this.$message({
+              message: "恭喜你,更新成功！",
+              type: "success",
+            });
+            //2-3如果查询到了路由跳转到商品列表（编程式路由）,.5s跳转
+            setTimeout(() => {
+              this.$router.push({
+                name: "Shangping", //后退到命名为Shangping的路由组件
+              });
+            }, 500);
+            }
+        }).catch(err=>{
+            console.log(err);
+        })
+        // console.log(this.coyForm,myId);
+    },
   },
   components: {
     CoyDialog,
   },
+
   mounted() {
     this.$bus.$on("sendTree", (v) => {
       //接收Tree的数据
@@ -226,11 +277,13 @@ export default {
     });
     this.$bus.$on("closeDia", (v) => {
       //接收商品选择弹窗的关闭按钮
+
       this.dialogVisible = v;
       // console.log(v);
     });
     this.$bus.$on("closeDiaImg", (v) => {
       //接收图片上传弹窗的关闭按钮
+
       this.dialogVisibleImg = v;
       // console.log(v);
     });
@@ -238,6 +291,18 @@ export default {
       //接收上传的图片url地址
       this.coyForm.coyPicture = base.host + v.slice(15);
     });
+    this.getFormOne(); // 调用显示表单数据
+  },
+
+  computed: {
+    editOrAdd() {
+      // 通过路由传参得到判断是否为添加/编辑---true为添加,false为编辑 this.$router.currentRoute.query.coyEditDoubt
+      return this.$router.currentRoute.query.coyEditDoubt ? "添加" : "编辑";
+    },
+    editOrAddSubmit() {
+      // 通过路由传参得到判断是否为添加/编辑---true为添加,false为编辑 this.$router.currentRoute.query.coyEditDoubt
+      return this.$router.currentRoute.query.coyEditDoubt ? "添加" : "保存";
+    },
   },
 };
 </script>

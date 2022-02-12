@@ -1,8 +1,10 @@
 /* 设置全局的elmentCss样式 */
 
-.el-loading-spinner i{
-    color: #009c7f !important;
-  }
-.el-loading-spinner .el-loading-text{
-    color: #009c7f !important;
+.el-loading-spinner i {
+  color: #009c7f !important;
 }
+
+.el-loading-spinner .el-loading-text {
+  color: #009c7f !important;
+}
+

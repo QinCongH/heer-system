@@ -84,12 +84,46 @@ router.get('/api/commodity', async (req, res, next) => {
                                 }
                         })
                         if (coyDel) {
-                                res.status=200
-                                res.send({msg:'删除成功'})
+                                res.status = 200
+                                res.send({
+                                        msg: '删除成功'
+                                })
                         }
                 }
 
 
         })
+        //5.根据id查询单个
+        .get('/api/commodityOne', async (req, res) => {
+                let coyId = req.query.myid //获取前端发送的id
+                if (coyId) { //如果获取到了
+                        let searchRes = await Commodity.findById(coyId)
+                        if (searchRes) { //如果查询成功
+                                res.status = 200
+                                res.send({
+                                        data: searchRes,
+                                        msg: '查询成功'
+                                })
+                        } else {
+                                res.send({
+                                        msg: 'error'
+                                })
+                        }
+                }
+        })
+        //6.根据id进行更新数据
+        .post('/api/commodityUpdata', async (req, res) => {
+                let coyId = req.body.data.myId //获取到id
+                let coyUpdataList = await req.body.data.myList //获取到List
+                if (coyUpdataList._id === coyId) { //如果列表id和接收的id相同，则执行更新
+                        let resCoy = await Commodity.findByIdAndUpdate(coyId, coyUpdataList)
+                        if (resCoy) { //如果更新成功
+                                res.status = 200
+                                res.send({
+                                        msg: '更新成功'
+                                })
+                        }
+                }
+        })
 
-module.exports = router
+        module.exports = router

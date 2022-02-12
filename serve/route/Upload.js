@@ -77,7 +77,7 @@ router.post('/api/uploadImg', upload.single('file'), (req, res,next) => { ////he
     } = req.file
     let types = ['jpg', 'jpeg', 'png', 'gif'] //允许上传的数据类型
     let tmpType = mimetype.split('/')[1]
-    if (size > 500000) {
+    if (size > 5000000) {
         return res.send({
             err: -1,
             msg: '尺寸过大'

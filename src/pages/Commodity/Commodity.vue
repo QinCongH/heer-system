@@ -11,12 +11,15 @@
           ></el-input>
         </el-col>
         <el-col :span="2">
-          <el-button type="primary" size="mini" @click="coySearch">
+          <el-button type="primary" size="mini" @click="coySearch"  icon="el-icon-search">
             查询
           </el-button>
         </el-col>
         <el-col :span="2">
-          <router-link to="/CoyAdd">
+          <!-- 路由传参 -->
+          <router-link
+            :to="{ name: 'CoyTianJia', query: { coyEditDoubt: true } }"
+          >
             <el-button type="primary" size="mini"> 增加 </el-button>
           </router-link>
         </el-col>
@@ -88,15 +91,29 @@
               show-overflow-tooltip
             >
             </el-table-column>
-            <el-table-column label="操作" width="200" align="center">
+            <el-table-column
+              label="操作"
+              width="200"
+              class="coyOperate"
+              align="center"
+             
+            >
               <template scope="scope">
-                <el-button size="mini" type="info">编辑</el-button>
+                <router-link
+                  :to="{
+                    name: 'CoyTianJia',
+                    query: { coyEditDoubt: false, coyId: scope.row._id },
+                  }"
+                >
+                  <el-button size="small" type="info"><i class="el-icon-edit"></i> 编辑 </el-button>
+                </router-link>
+                &nbsp;
                 <el-button
-                  size="mini"
+                  size="small"
                   type="danger"
                   @click="coyOpenDel(scope.row._id)"
-                  >删除</el-button
-                >
+                  ><i class="el-icon-delete"></i>删除
+                </el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -334,6 +351,14 @@ export default {
           message: "请选择您要删除的商品!!",
         });
       }
+    },
+    //5.编辑
+    coyEdit(coyEditId) {
+      this.$bus.$emit("sendId", coyEditId); //将id数据传给商品编辑页面
+      //前进到商品添加路由(与商品添加页面一样)
+      this.$router.replace({
+        name: "CoyTianJia", //前进到命名为MsgContent的路由组件
+      });
     },
   },
   created() {
