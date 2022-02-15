@@ -31,7 +31,8 @@ import {
   Tree,
   message,
   Loading,
-  MessageBox
+  MessageBox,
+  Checkbox
 } from 'element-ui'; //局部引用element
 Vue.component('el-radio-group', RadioGroup);
 Vue.component('el-radio-button', RadioButton);
@@ -59,9 +60,11 @@ Vue.component('el-breadcrumb-item', BreadcrumbItem);
 Vue.component('el-cascader', Cascader);
 Vue.component('el-popover', Popover);
 Vue.component('el-tree', Tree);
+Vue.component('el-checkbox', Checkbox);
 Vue.use(Loading.directive); //使用loding
 import './assets/css/common.css' //引入common.css
 import './assets/css/elementGlobal.css' //引入common.css
+import './assets/css/layout.css' //引入common.css
 import 'font-awesome/css/font-awesome.min.css' //引入font-awesom
 import api from './api/index' //引入axios封装文件
 Vue.config.productionTip = false //阻止生产环境提示
@@ -69,6 +72,9 @@ Vue.prototype.$message = message //安装$message
 Vue.prototype.$confirm = MessageBox.confirm
 Vue.prototype.$alert = MessageBox.alert
 Vue.prototype.$prompt = MessageBox.prompt
+// echarts按需引入
+import * as echarts from 'echarts';
+Vue.prototype.$echarts = echarts  //安装echarts
 new Vue({
   render: h => h(App), //动态创建<App></App> 标签
   router, //挂载路由

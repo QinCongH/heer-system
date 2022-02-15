@@ -1,0 +1,26 @@
+/* 更大设备 */
+@media screen and (min-width: 1281px) {}
+
+/* 笔记本或PC */
+@media screen and (min-width: 1024px) and (max-width: 1280px) {
+    .logOrRst {
+        width: 50% !important;
+    }
+}
+
+/* ##平板电脑/Ipad竖屏 */
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+    .logOrRst {
+        width: 50% !important;
+    }
+}
+
+/* 多数竖屏的智能手机 */
+@media screen and (min-width: 320px) and (max-width: 767px) {
+    .logOrRst {
+        width: 100% !important;
+    }
+}
+
+/* 公共 */
+@media screen and (min-width: 320px) and (max-width: 1023px) {}

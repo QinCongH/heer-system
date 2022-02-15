@@ -1,3 +1,7 @@
+/*
+侧边栏状态
+
+*/
 const sideAbout = {
     namespaced: true, //开启命名空间
     actions: {

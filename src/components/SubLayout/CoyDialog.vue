@@ -1,8 +1,7 @@
 <template>
   <div>
     <!-- **弹窗** -->
-      <!-- 
-
+    <!-- 
         :before-close弹窗关闭回调
        -->
     <!--商品选择---内弹窗 -->
@@ -39,29 +38,35 @@
         <el-button type="primary" @click="ImgDiaclose">确 定</el-button>
       </span>
     </el-dialog>
+
+
   </div>
 </template>
 
 <script>
 import Tree from "./CoyTree.vue";
-import CoyUploadImg from './CoyUploadImg.vue'
+import CoyUploadImg from "./CoyUploadImg.vue";
+
 export default {
   name: "CoyDialog",
   components: {
     Tree,
-    CoyUploadImg
+    CoyUploadImg,
   },
-  props: ["dialogVisible","dialogVisibleImg"], //接收值
-  methods:{
-    Diaclose(){ //商品选择弹窗----将false传递给父组件=>父组件将false传递给dialogVisible
-      this.$bus.$emit('closeDia',false)
+  props: ["dialogVisible", "dialogVisibleImg"], //接收值  dialogVisible为true则弹窗开启
+  methods: {
+    Diaclose() {
+      //商品选择弹窗----将false传递给父组件=>父组件将false传递给dialogVisible
+      this.$bus.$emit("closeDia", false);
       // console.log(done);
     },
-    ImgDiaclose(){ //图片上传弹窗---将false传递给父组件=>父组件将false传递给dialogVisible
-      this.$bus.$emit('closeDiaImg',false)
+    ImgDiaclose() {
+      //图片上传弹窗---将false传递给父组件=>父组件将false传递给dialogVisible
+      this.$bus.$emit("closeDiaImg", false);
       // console.log(done);
-    }
+    },
   },
+
 };
 </script>
 

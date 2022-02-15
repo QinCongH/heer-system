@@ -8,3 +8,29 @@
   color: #009c7f !important;
 }
 
+.loginCtn .el-input__inner {
+  background: transparent;
+  border: none;
+  outline: none;
+  flex: 1;
+  color: #fff;
+}
+.loginCtn .el-input__inner::-webkit-input-placeholder {
+  color: #fff;
+}
+.loginCtn .el-form-item {
+  flex: 1;
+  margin-bottom: 0px;
+}
+.loginCtn .el-checkbox__input.is-checked .el-checkbox__inner,.loginCtn .el-checkbox__input.is-indeterminate .el-checkbox__inner{
+  background-color: #0f997f;
+  border-color: #19827a;
+}
+.loginCtn .el-checkbox__input.is-checked+.el-checkbox__label{
+  color: #fff;
+}
+.loginCtn .el-form-item__error{
+  color: #008970;
+  top: 78%;
+    left: 16px;
+}
