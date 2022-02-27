@@ -20,6 +20,9 @@
     .logOrRst {
         width: 100% !important;
     }
+    .loginBox{
+        height: 90.5vh !important;
+    }
 }
 
 /* 公共 */

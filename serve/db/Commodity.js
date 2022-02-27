@@ -1,12 +1,15 @@
-// 连接数据库
-const mongoose = require('mongoose')
-mongoose.connect("mongodb://localhost/heersystem").then(() => {
-    console.log('heersystem数据库连接成功');
-}).catch(() => {
-    console.log('heersystem数据库连接失败');
-})
-const Schema = mongoose.Schema //创建文档结构变量
-var commoditySchema = new Schema({ //设计表结构
+/*
+    注册
+*/
+
+//1.引入mongoose模块
+const mongoose = require('mongoose')    
+// 2.连接数据库
+mongoose.connect("mongodb://localhost/heersystem")
+// 3.创建文档结构变量
+const Schema = mongoose.Schema 
+// 4.设计表结构
+var CommoditySchema = new Schema({ 
     coyName: { //商品名称
         type: String,
         require: true
@@ -36,4 +39,7 @@ var commoditySchema = new Schema({ //设计表结构
 
 
 //创建实例模型 导出模型构造函数 module.exports=mongoose.model('导入的模块命名',导出对象名)
-module.exports=mongoose.model('Commodity', commoditySchema)
+module.exports=mongoose.model('Commodity', CommoditySchema)
+
+
+

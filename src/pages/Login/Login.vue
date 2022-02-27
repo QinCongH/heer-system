@@ -1,84 +1,11 @@
 <template>
   <div class="loginBox">
     <div class="loginFloor"></div>
-    <!-- 登录 -->
+    <!-- 登录/注册 -->
 
     <div class="logOrRst">
       <!--1. 注册 -->
-      <div v-if="!isLogin" class="login box1" :class="{ ani: !isani }">
-        <div class="loginTop">
-          <p>注册</p>
-          <span>REGISTER</span>
-        </div>
-        <el-form :model="registerForm" :rules="registerRules" ref="rstruleForm">
-          <div class="loginCtn">
-            <div class="One">
-              <span><i class="fa fa-mobile" aria-hidden="true"></i> </span>
-              <el-form-item prop="username">
-                <el-input
-                  type="text"
-                  placeholder="请输入用户名"
-                  autocomplete="off"
-                  v-model="registerForm.username"
-                >
-                </el-input>
-              </el-form-item>
-            </div>
-            <div class="One">
-              <span><i class="fa fa-mobile" aria-hidden="true"></i> </span>
-              <el-form-item prop="email">
-                <el-input
-                  type="text"
-                  placeholder="请输入邮箱"
-                  autocomplete="off"
-                  v-model="registerForm.email"
-                >
-                </el-input>
-              </el-form-item>
-            </div>
-            <div class="Two">
-              <span><i class="fa fa-lock" aria-hidden="true"></i> </span>
-              <el-form-item prop="password">
-                <el-input
-                  type="text"
-                  placeholder="请输入密码"
-                  autocomplete="off"
-                  v-model="registerForm.password"
-                  show-password
-                >
-                </el-input>
-              </el-form-item>
-            </div>
-            <div class="Two">
-              <span><i class="fa fa-lock" aria-hidden="true"></i> </span>
-              <el-form-item prop="isPwd">
-                <el-input
-                  type="text"
-                  placeholder="请再次确认密码"
-                  autocomplete="off"
-                  v-model="registerForm.isPwd"
-                  show-password
-                >
-                </el-input>
-              </el-form-item>
-            </div>
-            <div class="Three">
-              <div>
-                <el-checkbox v-model="loginForm.checked"
-                  >勾选即表示同意 协议条款 和 隐私政策</el-checkbox
-                >
-              </div>
-              <div @click="toLogin">
-                <p>返回登录</p>
-              </div>
-            </div>
-          </div>
-        </el-form>
-
-        <div class="loginFoot">
-          <input type="button" value="提交" @click="rstSubmit" />
-        </div>
-      </div>
+      <register v-if="!isLogin"></register>
       <!--2. 登录 -->
       <div v-if="isLogin" class="login box2" :class="{ ani: isani }">
         <div class="loginTop">
@@ -133,6 +60,7 @@
 <script>
 import { mapState } from "vuex";
 import { mapMutations } from "vuex";
+import Register from "./Register.vue";
 export default {
   name: "Login",
   computed: {
@@ -140,16 +68,14 @@ export default {
       loginForm: "loginForm",
       loginRules: "loginRules",
       isLogin: "isLogin",
-      registerForm: "registerForm",
-      registerRules: "registerRules",
       isani: "isani",
     }),
   },
   methods: {
+    //vuex 1--commit提交值
     ...mapMutations("loginAbout", {
       toRegister: "CHANGELOGIN",
-      toLogin: "CHANGERST",
-    }), //vuex 1--commit提交值
+    }),
     //登陆的操作
     loginSubmit() {
       this.$refs.loginruleForm.validate((valid) => {
@@ -172,30 +98,8 @@ export default {
       });
     },
     //注册的操作
-    rstSubmit() {
-      this.$refs.rstruleForm.validate((valid) => {
-        if (valid) {
-          // 如果校验成功
-          this.$message({
-            showClose: true,
-            message: "恭喜你，这是一条成功消息",
-            type: "success",
-          });
-        } else {
-          //如果校验失败
-          this.$message({
-            showClose: true,
-            message: "  请检查您输入的字段是否正确",
-            type: "error",
-          });
-          return false;
-        }
-      });
-    },
   },
-  data() {
-    return {};
-  },
+  components: { Register },
 };
 </script>
 
@@ -294,16 +198,6 @@ export default {
         }
       }
     }
-
-    .box1 {
-      position: absolute;
-      top: 0px;
-      bottom: 0px;
-      width: 100%;
-      background: #2d2e2e36;
-      // z-index: -1;
-    }
-
     .box2 {
       position: absolute;
       top: 0px;

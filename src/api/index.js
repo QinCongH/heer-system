@@ -53,6 +53,22 @@ const api = {
         return axios.post(base.coyUpdata, {
             data
         })
+    },
+    /*
+    7.注册
+    */
+    postRegister(data) {
+        return axios.post(base.register, {
+            data
+        })
+    },
+    /*
+    8.邮箱查询
+    */
+    getRstEmail(params) {
+        return axios.get(base.registerTest, {
+            params
+        })
     }
 }
 

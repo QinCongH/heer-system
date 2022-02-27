@@ -7,7 +7,8 @@ const base = {
     coyAdd: '/myApi/api/commodityAdd', //商品增加
     coyDel: '/myApi/api/commodityDel', //商品删除
     coyOneList: '/myApi/api/commodityOne', //查询单个商品
-    coyUpdata:'myApi/api/commodityUpdata'   //商品更新
-    
+    coyUpdata:'myApi/api/commodityUpdata',   //商品更新
+    register:'myApi/api/register' ,  //注册接口
+    registerTest:'myApi/api/rstquery'   //通过email查询接口
 }
 export default base

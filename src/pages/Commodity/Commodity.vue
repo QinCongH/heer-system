@@ -180,7 +180,6 @@ export default {
               this.pageSize = res.data.pageSize; //从数据库获取每页显示的总页数
               this.total = res.data.count; //  从数据库获取数据总数
             }
-
             // console.log(res.data);
           },
           (err) => {

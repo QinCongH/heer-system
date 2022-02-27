@@ -1,24 +1,26 @@
 /*
-登录状态
+登录/注册状态
 
 */
-
 const loginAbout = {
     namespaced: true, //开启命名空间
     actions: {
-
-
     },
     mutations: {
         CHANGELOGIN(state) { //改变登录
             state.isani = true
+            for(let v in state.loginForm){
+                state.loginForm[v]=""    //字符串初始化
+            }
             setTimeout(() => {
                 state.isLogin = false
             }, 201);
-
         },
         CHANGERST(state) { //改变注册
             state.isani = false
+            for(let v in state.registerForm){
+                state.registerForm[v]=""    //字符串初始化
+            }
             setTimeout(() => {
                 state.isLogin = true
             }, 201);
@@ -28,7 +30,7 @@ const loginAbout = {
         loginForm: { //1.登录的数据
             email: '',
             password: '',
-            checked: true
+            checked: false
         },
         loginRules: { //2.登录表单校验规则
             email: [{
@@ -54,7 +56,7 @@ const loginAbout = {
             username: '',
             password: '',
             isPwd: '',
-            checked: true
+            checked: false
         },
         registerRules: { //2.注册表单校验规则
             email: [{
@@ -92,7 +94,6 @@ const loginAbout = {
             }]
         },
         isani: false //动画是否显示
-
     }
 }
 
