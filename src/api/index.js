@@ -23,7 +23,6 @@ const api = {
 
     /*
         3.商品添加
-
     */
     postCommodityAdd(data) { //data传数据给后端
         return axios.post(base.coyAdd, {
@@ -63,13 +62,21 @@ const api = {
         })
     },
     /*
-    8.邮箱查询
+    8.注册时邮箱查询
     */
     getRstEmail(params) {
         return axios.get(base.registerTest, {
             params
         })
-    }
+    },
+    /*
+    9.登录时查询
+    */
+    postLoginQuery(data){
+        return axios.post(base.loginTest,{
+            data
+        })
+   }
 }
 
 export default api

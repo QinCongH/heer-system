@@ -1,8 +1,12 @@
+/*
+    注册与登录
+*/
 // 注册路由
 const express = require('express') //引入express
 const router = express.Router() //创建路由实例
 const Register = require('../db/Register') //引入数据表
 const bcrypt = require('bcrypt') //引入加密
+const jwt=require('jsonwebtoken')
 //注册的账户添加
 router.post('/api/register', async (req, res) => {
         let registerAddList = req.body.data //获取到前台发送的表单数据
@@ -35,9 +39,46 @@ router.post('/api/register', async (req, res) => {
         if (myemailrst) { //如果查询到了
             res.status = 200
             res.send({
+                params: myemailrst,
                 msg: 'success'
             })
-        }else{
+        } else {
+            res.send({
+                msg: 'error'
+            })
+        }
+    })
+    //登录字段查询
+    /*
+        1.获取前台数据
+        2.通过前台数据查询
+        3.密码比对
+        4.发送token值
+    */
+    .post('/api/loginquery', async (req, res) => {
+        // let isEqual = await bcrypt.compare('明文密码', '加密密码');//数据库密码与传过来的密码比对
+        let myemail = req.body.data.email //获取前端数据
+        let myemailrst = await Register.findOne({ //单个查询
+            email: myemail
+        })
+        let isValid = await bcrypt.compare(req.body.data.password, myemailrst.password) //true为比对成功
+        if (myemailrst&&isValid) { //如果查询到了or比对成功
+            // // 生成token
+            let SECRET="QCONETOKEN"
+            const token=jwt.sign({
+                id:String(myemailrst._id)
+            },SECRET)
+
+
+            // console.log(isValid);
+            res.status = 200
+            res.send({ //发送请求
+                data: myemailrst,
+                msg: 'success',
+                isValid:isValid, //判断是否登录
+                token:token
+            })
+        } else {
             res.send({
                 msg: 'error'
             })

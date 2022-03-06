@@ -95,10 +95,11 @@ export default {
   padding: 0px 10px;
   .FastList {
     display: flex;
-    justify-content: space-between;
     flex-wrap: wrap;
     div {
       margin-top: 15px;
+      margin-left: 10px;
+
       button {
         background: #009c7f;
       }

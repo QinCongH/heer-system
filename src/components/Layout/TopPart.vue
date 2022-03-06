@@ -20,9 +20,13 @@
       </div>
       <div class="loginButton">
         <span>
-          欢迎：admin
+          欢迎：{{ myUsername }}
+          &nbsp;
           <i class="fa fa-user-circle" aria-hidden="true"></i>
         </span>
+        <div class="exitLogin">
+          <p>退出登录</p>
+        </div>
       </div>
     </div>
   </div>
@@ -31,10 +35,17 @@
 <script>
 import { mapState } from "vuex";
 import { mapMutations } from "vuex";
+import {mapGetters} from "vuex";
 export default {
   name: "TopPart",
   computed: {
-    ...mapState("sideAbout", { isCollapse: "isCollapse" }), //获取vuex的sideAbout模块数据isCollapse
+    ...mapState("sideAbout", {
+      isCollapse: "isCollapse",
+
+    }), //获取vuex的sideAbout模块数据isCollapse
+    ...mapGetters("sideAbout",{
+      myUsername: "myUsername",
+    })
   },
   methods: {
     ...mapMutations("sideAbout", {
@@ -42,6 +53,7 @@ export default {
       openSide: "OPENSIDE",
     }), //提交vuex的sideAbout模块方法
   },
+
 };
 </script>
 
@@ -97,12 +109,31 @@ export default {
   width: 13%;
   text-align: center;
   transition: 0.33s ease;
+  position: relative;
   i {
     font-size: 12px;
     color: #1a3ea6;
   }
   &:hover {
+    .exitLogin{
+      opacity: 1;
+          z-index: -1;
+    }
     box-shadow: 2px 3px 26px #dbd9d9;
+  }
+  .exitLogin {
+    position: absolute;
+    z-index: -1;
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    background-color: #009c7f7a;
+    color: #fff;
+    text-align: center;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    opacity: 0;
+    transition: .33s ease;
   }
 }
 </style>

@@ -100,6 +100,7 @@ export default {
         .getRstEmail(params)
         .then((res) => {
           if (res.data.msg == "success") {
+            //已经注册
             //1.邮箱已经注册
             //如果校验失败
             this.$message({
@@ -131,6 +132,7 @@ export default {
           }
         })
         .catch((err) => {
+          //未注册
           console.log(err);
         });
     },
@@ -148,7 +150,10 @@ export default {
             type: "success",
           });
           // 2.跳转到登录
-          this.$store.commit("loginAbout/CHANGERST");
+          setTimeout(() => {
+             this.$store.commit("loginAbout/CHANGERST");
+          }, 1000);
+         
         },
         (err) => {
           console.log(err);

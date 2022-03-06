@@ -9,6 +9,7 @@ const base = {
     coyOneList: '/myApi/api/commodityOne', //查询单个商品
     coyUpdata:'myApi/api/commodityUpdata',   //商品更新
     register:'myApi/api/register' ,  //注册接口
-    registerTest:'myApi/api/rstquery'   //通过email查询接口
+    registerTest:'myApi/api/rstquery' ,  //通过email查询接口
+    loginTest:'myApi/api/loginquery',     //登录字段查询
 }
 export default base

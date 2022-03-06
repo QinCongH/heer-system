@@ -80,25 +80,58 @@ export default {
     loginSubmit() {
       this.$refs.loginruleForm.validate((valid) => {
         if (valid) {
-          // 如果校验成功
-          this.$message({
-            showClose: true,
-            message: "恭喜你，这是一条成功消息",
-            type: "success",
-          });
+          // 1.字段发送给后端校验
+          let data = {
+            email: this.loginForm.email,
+            password: this.loginForm.password,
+          };
+          // 登录接口
+          this.$api
+            .postLoginQuery(data)
+            .then((res) => {
+              // 发送username
+              this.$bus.$emit("sendUsername", res.data.data.username);
+              // console.log(res.data.data.username);
+              this.$store.commit("sideAbout/TOUSERNAME",res.data.data.username)
+              localStorage.setItem("token", res.data.token);
+              localStorage.setItem("username",res.data.data.username);  //将用户名存入localStorage
+              // 如果校验成功
+              this.$message({
+                showClose: true,
+                message: "恭喜你，登录成功",
+                type: "success",
+              });
+              //登录成功跳转到首页
+              setTimeout(() => {
+                this.$router.replace({
+                  name: "ZhuYeNeiRong",
+                });
+              }, 300);
+            })
+            .catch((err) => {
+              //如果校验失败
+              this.$message({
+                showClose: true,
+                message: "请检查您输入的字段是否正确，登录失败！！！",
+                type: "error",
+              });
+              return false;
+            });
         } else {
-          //如果校验失败
+                    //如果校验失败
           this.$message({
             showClose: true,
-            message: "  请检查您输入的字段是否正确",
+            message: "请检查您输入的字段是否正确",
             type: "error",
           });
           return false;
         }
       });
     },
+
     //注册的操作
   },
+  mounted() {},
   components: { Register },
 };
 </script>

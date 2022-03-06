@@ -36,7 +36,8 @@ const router = new VueRouter({
                     name: 'ZhuYeNeiRong',
                     component: Front,
                     meta: {
-                        title: '主页'
+                        title: '主页',
+                        isAccess: true //进行权限管理
                     },
                 },
                 {
@@ -117,8 +118,26 @@ const router = new VueRouter({
         }
     ]
 })
-
-
+// 全局前置守卫-设置权限
+/*
+思路：
+1）如果token不为空自动登录到主页
+2）如果token为空自动跳转到login
+3) 如果为login页面放行
+*/
+router.beforeEach((to, from, next) => {
+    // console.log(to);
+    let token = localStorage.getItem("token")
+    // console.log(token);
+    if (to.path === "/login") {
+        next()
+    } else if (token) { //如果存在token，放行
+        next();
+    } else{ //不存在token时,跳转到token
+        next("/login");
+    }
+    // 路由校验
+})
 //全局后置守卫---设置页面title
 router.afterEach((to) => {
     if (to.meta.title) {

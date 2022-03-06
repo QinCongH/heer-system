@@ -24,7 +24,20 @@ const sideAbout = {
     },
     state: {
         isCollapse: false, //导航未闭合
-        sideWidth: '15%'
+        sideWidth: '15%',
+        username: ''
+    },
+    getters: {      //对username加工
+        myUsername(state) {
+            let username = localStorage.getItem("username");
+            console.log(username);
+            if (username) { //如果存在username
+                state.username = username;
+            }else{
+                state.username ="未登录"
+            }
+            return state.username
+        }
     }
 }
 
