@@ -90,11 +90,9 @@ export default {
             .postLoginQuery(data)
             .then((res) => {
               // 发送username
-              this.$bus.$emit("sendUsername", res.data.data.username);
               // console.log(res.data.data.username);
-              this.$store.commit("sideAbout/TOUSERNAME",res.data.data.username)
               localStorage.setItem("token", res.data.token);
-              localStorage.setItem("username",res.data.data.username);  //将用户名存入localStorage
+              localStorage.setItem("username", res.data.data.username); //将用户名存入localStorage
               // 如果校验成功
               this.$message({
                 showClose: true,
@@ -109,16 +107,17 @@ export default {
               }, 300);
             })
             .catch((err) => {
+              // console.log("什么都没有");
               //如果校验失败
               this.$message({
                 showClose: true,
-                message: "请检查您输入的字段是否正确，登录失败！！！",
+                message: "邮箱或密码错误！！！",
                 type: "error",
               });
               return false;
             });
         } else {
-                    //如果校验失败
+          //如果校验失败
           this.$message({
             showClose: true,
             message: "请检查您输入的字段是否正确",

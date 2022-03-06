@@ -6,6 +6,9 @@
     .logOrRst {
         width: 50% !important;
     }
+    .loginBox{
+        height: 90.5vh !important;
+    }
 }
 
 /* ##平板电脑/Ipad竖屏 */
