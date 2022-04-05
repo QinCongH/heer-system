@@ -61,7 +61,7 @@ router.post('/api/register', async (req, res) => {
         let myemailrst = await Register.findOne({ //单个查询
             email: myemail
         })
-        console.log(myemailrst);
+        // console.log(myemailrst);
         if (myemailrst!==null) { //如果查询到了or比对成功
             let isValid = await bcrypt.compare(req.body.data.password, myemailrst.password) //true为比对成功
             if (isValid) {

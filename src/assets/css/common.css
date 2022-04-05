@@ -204,4 +204,25 @@ q:after {
     height: 0;
 }
 
+/* 自定义css */
+.pd10{
+padding: 10px;
+}
+.mt30{
+    margin-top: 30px;
+}
+.mt15{
+    margin-top: 15px;
+}
+.defaultBtn{
+    width: 85%;
+    background-color: #009c7f;
+    color: #fff;
+}
+.defaultBtn:hover{
+    color: #000000;
+    border-color: #3bea96;
+    background-color: #ffffff;
+    transition: .33s ease;
+}
 
