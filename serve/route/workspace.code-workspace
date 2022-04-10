@@ -1,0 +1,19 @@
+{
+	"folders": [
+		{
+			"path": "..\\..\\..\\..\\blog"
+		},
+		{
+			"path": "..\\..\\.."
+		},
+		{
+			"path": "..\\..\\..\\..\\wwwroot\\365siteweb\\templets"
+		},
+		{
+			"path": "..\\..\\..\\..\\学习代码"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "学习代码"
+	}
+}

@@ -9,7 +9,7 @@ const cors = require('cors')
 const commodityRouter = require('./route/Commodity') //引入路由文件
 const uploadRouter = require('./route/Upload') //引入路由文件
 const RegisterRouter = require('./route/Register') //引入路由文件
-
+const PersonerRouter=require('./route/Personal')    //引入个人中心路由
 app.use(cors())
 app.use(express.static('public/uploads')) //响应静态文件 测试：localhost:2022/图片地址
 
@@ -17,7 +17,7 @@ app.use(express.static('public/uploads')) //响应静态文件 测试：localhos
 app.use(commodityRouter)
 app.use(uploadRouter) //使用图片上传路由
 app.use(RegisterRouter) //使用注册路由
-
+app.use(PersonerRouter) //使用个人中心路由
 // 启动监听
 app.listen(2022, (err) => {
     if (err) {

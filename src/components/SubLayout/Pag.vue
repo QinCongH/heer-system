@@ -30,6 +30,9 @@ export default {
       type: Number,
       default: 6,
     },
+    page:{
+      type:Number
+    }
   },
   data() {
     return {

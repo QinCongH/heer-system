@@ -72,11 +72,19 @@ const api = {
     /*
     9.登录时查询
     */
-    postLoginQuery(data){
-        return axios.post(base.loginTest,{
+    postLoginQuery(data) {
+        return axios.post(base.loginTest, {
             data
         })
-   }
+    },
+    /*
+    10.个人中心数据查询
+    */
+    personalQuery(params) {
+        return axios.get(base.psrList, {
+            params
+        })
+    }
 }
 
 export default api

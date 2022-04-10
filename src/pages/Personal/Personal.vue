@@ -25,13 +25,13 @@
             @selection-change="handleSelectionChange"
           >
             <el-table-column type="selection" width="55"> </el-table-column>
-            <el-table-column label="id" width="120">
-              <template slot-scope="scope">{{ scope.row.date }}</template>
+            <el-table-column prop="_id" label="id" width="220">
+              <!-- <template slot-scope="scope">{{ scope.row.date }}</template> -->
             </el-table-column>
-            <el-table-column prop="name" label="邮箱" width="200">
+            <el-table-column prop="email" label="邮箱" width="200">
             </el-table-column>
             <el-table-column
-              prop="address"
+              prop="username"
               label="用户名"
               show-overflow-tooltip
             >
@@ -61,14 +61,19 @@
     </div>
     <!-- 底部 -->
     <div class="personer_foot">
-        <Pag/>
+      <Pag
+        :pageSize="psldata.pageSize"
+        :page="psldata.page"
+        :total="total"
+        @current-change="getPage"
+      />
     </div>
   </div>
 </template>
 
 <script>
-// import {mapState} from "vuex"       //state
-// import {mapMutations} from "vuex"   //commit
+import { mapActions } from "vuex";
+import { mapState } from "vuex"; //state
 import Pag from "../../components/SubLayout/Pag.vue";
 export default {
   name: "Personal",
@@ -81,115 +86,24 @@ export default {
         this.$store.commit("personalAbout/CHANGE_KEYWORD", newV);
       },
     },
+    ...mapState("personalAbout", {
+      psldata: "data",
+      total: "total",
+      tableData: "tableData",
+    }),
+  },
+  components: {
+    Pag,
   },
   data() {
     return {
-      tableData: [
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-      ],
       multipleSelection: [],
     };
   },
   methods: {
+    //发送给vuex使用axios
+    ...mapActions("personalAbout", { getTableData: "getTableData" }),
+    //取消选择
     toggleSelection(rows) {
       if (rows) {
         rows.forEach((row) => {
@@ -199,17 +113,26 @@ export default {
         this.$refs.multipleTable.clearSelection();
       }
     },
-
-    handleSelectionChange(){
-        
-    }
+    //获取pag的页码
+    getPage(page) {
+      this.getTableData(page);
+    },
+    handleSelectionChange() {},
   },
-  components: {
-    Pag,
+
+  mounted() {
+    //  dom更新完的钩子，//初始化传值
+    this.getTableData(1);
   },
 };
 </script>
 
 <style scoped lang="less">
-
+.personal_top,
+.personal_ctn {
+  .el-button--primary:focus,
+  .el-button--primary:hover {
+    background: #009c7f;
+  }
+}
 </style>
