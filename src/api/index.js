@@ -84,6 +84,12 @@ const api = {
         return axios.get(base.psrList, {
             params
         })
+    },
+    /* 
+    11.查询所有
+    */
+    personalQueryAll() {
+        return axios.get(base.prtAll);
     }
 }
 

@@ -5,11 +5,16 @@
       <el-row :gutter="10">
         <el-col :md="18">
           <div class="personal_search">
-            <el-input v-model="Keyword" placeholder="请输入内容"> </el-input>
+            <el-input
+              v-model="Keyword"
+              placeholder="请输入内容"
+              @change="searchPersoner(Keyword)"
+            >
+            </el-input>
           </div>
         </el-col>
         <el-col :md="6">
-          <el-button class="defaultBtn" type="primary"> 查询 </el-button>
+          <el-button class="defaultBtn" type="primary" @click="searchPersoner(keyword)"> 查询 </el-button>
         </el-col>
       </el-row>
     </div>
@@ -102,7 +107,10 @@ export default {
   },
   methods: {
     //发送给vuex使用axios
-    ...mapActions("personalAbout", { getTableData: "getTableData" }),
+    ...mapActions("personalAbout", {
+      getTableData: "getTableData", //分页
+      searchPersoner:"searchPersoner" //搜索
+    }),
     //取消选择
     toggleSelection(rows) {
       if (rows) {
