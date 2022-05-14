@@ -22,6 +22,31 @@ const personalAbout = {
             }).catch(err => {
                 console.log(err);
             })
+        },
+        // 3.删除
+        deletePersonal(context, value) {
+            context.state.pslDelList.push(value) //插入数据
+            // 弹窗
+            this._vm.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                api.personalDel(
+                    context.state.pslDelList
+                ).then(res => {
+                    context.commit('DELETEPERSONAL', res)
+                })
+
+            }).catch(() => {
+                this._vm.$message({
+                    type: 'info',
+                    message: '已取消删除'
+                });
+          
+
+            });
+            // 在此处获取后端数据
         }
     },
     mutations: {
@@ -36,6 +61,16 @@ const personalAbout = {
             state.tableData = value.data.data.filter(v => {
                 return (v.username.indexOf(state.searchKeyword) !== -1) || (v._id.indexOf(state.searchKeyword) !== -1) || (v.email.indexOf(state.searchKeyword) !== -1)
             })
+            state.searchKeyword = ''
+        },
+        DELETEPERSONAL(state, value) {
+            if (value.status == 200) {
+                this._vm.$message({
+                    type: 'success',
+                    message: value.data.msg
+                });
+                state.pslDelList = []
+            }
         }
     },
     state: {
@@ -45,7 +80,8 @@ const personalAbout = {
             pageSize: 7 //每页显示多少数据    
         },
         tableData: [],
-        total: 0
+        total: 0,
+        pslDelList: [],
     }
 }
 

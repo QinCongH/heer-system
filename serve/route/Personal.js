@@ -1,8 +1,15 @@
 // 个人中心路由
 const express = require('express'); //引入express
 const Register = require('../db/Register'); //引入数据库
+//引入bodyParser模块 --得到post数据
+const bodyParser = require('body-parser');
 const router = express.Router() //创建router
-
+//解析 application/json
+router.use(bodyParser.json());
+//解析 application/x-www-form-urlencoded
+router.use(bodyParser.urlencoded({
+    extended: false
+}))
 router.get('/api/personer', async (req, res) => {
         // 1.获取分页数据
         // 测试
@@ -51,4 +58,24 @@ router.get('/api/personer', async (req, res) => {
             })
         }
     })
+    .post('/api/personer/delpersonal', async (req, res) => {
+        let getIdList = req.body.data
+        if (getIdList.length > 0) {
+            // 删除
+            let personalDel = await Register.remove({
+                "_id": { //$in字符选择查询_id字段带有61f91818353f2b794afef792，61f9190d6a50f6c0160e40a8的条件行
+                    $in:
+                        getIdList
+                    
+                }
+            })
+            if (personalDel) {
+                res.status = 200
+                res.send({
+                    msg:'删除成功'
+                })
+            }
+        }
+    })
+
 module.exports = router; //导出路由

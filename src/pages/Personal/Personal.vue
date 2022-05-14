@@ -42,12 +42,14 @@
             >
             </el-table-column>
             <el-table-column label="操作" width="220">
-              <el-button type="danger" size="mini"
+              <template scope="scope">
+              <el-button type="danger" size="mini" @click="deletePersonal(scope.row._id)"
                 ><i class="fa fa-trash-o" aria-hidden="true"></i> 删除
               </el-button>
               <el-button type="info" size="mini"
                 ><i class="fa fa-pencil" aria-hidden="true"></i> 编辑
               </el-button>
+              </template>
             </el-table-column>
           </el-table>
         </el-col>
@@ -109,8 +111,9 @@ export default {
     //发送给vuex使用axios
     ...mapActions("personalAbout", {
       getTableData: "getTableData", //分页
-      searchPersoner:"searchPersoner" //搜索
-    }),
+      searchPersoner:"searchPersoner", //搜索
+      deletePersonal:"deletePersonal" //删除
+}),
     //取消选择
     toggleSelection(rows) {
       if (rows) {

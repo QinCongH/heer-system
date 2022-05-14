@@ -1,6 +1,7 @@
 //路径配置文件
 const base = {
     host: 'http://localhost:8080/myApi', //基本地址
+//  ----商品管理-----
     commodityList: '/myApi/api/commodity', //商品 分页查询的列表
     coyAllList: '/myApi/api/commodityAll', //商品 查询全部
     updataImg: '/myApi/api/uploadImg', //图片上传
@@ -11,7 +12,9 @@ const base = {
     register:'myApi/api/register' ,  //注册接口
     registerTest:'myApi/api/rstquery' ,  //通过email查询接口
     loginTest:'myApi/api/loginquery',     //登录字段查询
+    // ----个人中心-----
     psrList:'myApi/api/personer'  ,         //分页字段查询
-    prtAll:'myApi/api/personer/queryAll'    //查询所有
+    prtAll:'myApi/api/personer/queryAll',    //查询所有
+    prtDel:'myApi/api/personer/delpersonal'         //删除
 }
 export default base

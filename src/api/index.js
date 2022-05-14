@@ -6,6 +6,7 @@ import axios from 'axios' //引入axios
 
 */
 const api = {
+    // ----------商品------------
     /*
         1.商品分页查询的列表
     */
@@ -53,6 +54,7 @@ const api = {
             data
         })
     },
+    // -------------注册-----------------
     /*
     7.注册
     */
@@ -77,6 +79,7 @@ const api = {
             data
         })
     },
+    // ----------个人中心------------
     /*
     10.个人中心数据查询
     */
@@ -90,7 +93,15 @@ const api = {
     */
     personalQueryAll() {
         return axios.get(base.prtAll);
-    }
+    },
+    /* 
+        12.删除
+    */
+   personalDel(data){
+        return axios.post(base.prtDel,{
+            data
+        })
+   }
 }
 
 export default api
