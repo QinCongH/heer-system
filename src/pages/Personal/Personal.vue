@@ -105,6 +105,7 @@ export default {
   data() {
     return {
       multipleSelection: [],
+      sendPage:1
     };
   },
   methods: {
@@ -112,7 +113,6 @@ export default {
     ...mapActions("personalAbout", {
       getTableData: "getTableData", //分页
       searchPersoner:"searchPersoner", //搜索
-      deletePersonal:"deletePersonal" //删除
 }),
     //取消选择
     toggleSelection(rows) {
@@ -127,6 +127,12 @@ export default {
     //获取pag的页码
     getPage(page) {
       this.getTableData(page);
+      this.sendPage=page
+    },
+    // 删除
+    deletePersonal(val){
+      //传递一个对象
+      this.$store.dispatch('personalAbout/deletePersonal',{sendIdList:val,sendpage:this.sendPage})
     },
     handleSelectionChange() {},
   },

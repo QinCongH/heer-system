@@ -7,6 +7,7 @@ const personalAbout = {
     actions: {
         // 1.获取用户数据
         getTableData(context, value) { //此处进行axios获取后台数据
+            
             api.personalQuery({
                 page: value,
                 pageSize: context.state.data.pageSize
@@ -25,7 +26,7 @@ const personalAbout = {
         },
         // 3.删除
         deletePersonal(context, value) {
-            context.state.pslDelList.push(value) //插入数据
+            context.state.pslDelList.push(value.sendIdList) //插入数据
             // 弹窗
             this._vm.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
                 confirmButtonText: '确定',
@@ -35,16 +36,18 @@ const personalAbout = {
                 api.personalDel(
                     context.state.pslDelList
                 ).then(res => {
-                    context.commit('DELETEPERSONAL', res)
+                    this._vm.$message({
+                        type: 'success',
+                        message: res.data.msg
+                    });
+                    context.commit('DELETEPERSONAL', value.sendpage)  
+                
                 })
-
             }).catch(() => {
                 this._vm.$message({
                     type: 'info',
                     message: '已取消删除'
-                });
-          
-
+                });   
             });
             // 在此处获取后端数据
         }
@@ -64,20 +67,16 @@ const personalAbout = {
             state.searchKeyword = ''
         },
         DELETEPERSONAL(state, value) {
-            if (value.status == 200) {
-                this._vm.$message({
-                    type: 'success',
-                    message: value.data.msg
-                });
+                // 删除成功调用action的方法
+                this.dispatch('personalAbout/getTableData',value)            
                 state.pslDelList = []
-            }
         }
     },
     state: {
         searchKeyword: '',
         data: {
             page: 1, //初始化页码
-            pageSize: 7 //每页显示多少数据    
+            pageSize: 6 //每页显示多少数据    
         },
         tableData: [],
         total: 0,
