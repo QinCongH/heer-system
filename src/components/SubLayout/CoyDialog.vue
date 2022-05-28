@@ -38,22 +38,40 @@
         <el-button type="primary" @click="ImgDiaclose">确 定</el-button>
       </span>
     </el-dialog>
-
-
+    <!-- 
+    个人中心编辑
+   -->
+    <el-dialog
+      title="编辑"
+      :visible.sync="personalEdit"
+      width="70%"
+      append-to-body
+      load
+      :before-close="personalEditClose"
+    >
+      <!-- 内容s -->
+      <personal-edit></personal-edit>
+      <!-- 内容e -->
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="personalEditClose">取 消</el-button>
+        <el-button type="primary" @click="personalEditClose">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import Tree from "./CoyTree.vue";
 import CoyUploadImg from "./CoyUploadImg.vue";
-
+import PersonalEdit from "./PersonalEdit.vue";
 export default {
   name: "CoyDialog",
   components: {
     Tree,
     CoyUploadImg,
+    PersonalEdit,
   },
-  props: ["dialogVisible", "dialogVisibleImg"], //接收值  dialogVisible为true则弹窗开启
+  props: ["dialogVisible", "dialogVisibleImg", "personalEdit"], //接收值  dialogVisible为true则弹窗开启
   methods: {
     Diaclose() {
       //商品选择弹窗----将false传递给父组件=>父组件将false传递给dialogVisible
@@ -65,8 +83,10 @@ export default {
       this.$bus.$emit("closeDiaImg", false);
       // console.log(done);
     },
+    personalEditClose() {
+      this.$bus.$emit("closePersonalDia", false);
+    },
   },
-
 };
 </script>
 

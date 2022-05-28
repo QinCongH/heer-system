@@ -56,7 +56,10 @@
                   @click="deletePersonal(scope.row._id)"
                   ><i class="fa fa-trash-o" aria-hidden="true"></i> 删除
                 </el-button>
-                <el-button type="info" size="mini"
+                <el-button
+                  type="info"
+                  size="mini"
+                  @click="personalEdit(scope.row)"
                   ><i class="fa fa-pencil" aria-hidden="true"></i> 编辑
                 </el-button>
               </template>
@@ -85,6 +88,7 @@
         @current-change="getPage"
       />
     </div>
+    <coy-dialog :personalEdit="isDialog"></coy-dialog>
   </div>
 </template>
 
@@ -92,6 +96,8 @@
 import { mapActions } from "vuex";
 import { mapState } from "vuex"; //state
 import Pag from "../../components/SubLayout/Pag.vue";
+import CoyDialog from "../../components/SubLayout/CoyDialog.vue";
+
 export default {
   name: "Personal",
   computed: {
@@ -111,12 +117,14 @@ export default {
   },
   components: {
     Pag,
+    CoyDialog,
   },
   data() {
     return {
       multipleSelection: [],
       sendPage: 1,
       delData: [],
+      isDialog: false,
     };
   },
   methods: {
@@ -168,11 +176,21 @@ export default {
       });
       // console.log(this.delData)
     },
+    // 编辑
+    personalEdit(val) {
+      this.isDialog = true;
+      this.$nextTick(function () {
+        this.$bus.$emit("perEditData", val);
+      });
+    },
   },
 
   mounted() {
     //  dom更新完的钩子，//初始化传值
     this.getTableData(1);
+    this.$bus.$on("closePersonalDia", (v) => {
+      this.isDialog = false;
+    });
   },
 };
 </script>
