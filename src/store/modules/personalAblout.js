@@ -7,7 +7,6 @@ const personalAbout = {
     actions: {
         // 1.获取用户数据
         getTableData(context, value) { //此处进行axios获取后台数据
-            
             api.personalQuery({
                 page: value,
                 pageSize: context.state.data.pageSize
@@ -26,7 +25,12 @@ const personalAbout = {
         },
         // 3.删除
         deletePersonal(context, value) {
-            context.state.pslDelList.push(value.sendIdList) //插入数据
+            // 判断是删除单个还是多个
+            if (value.sogleDel) {
+                context.state.pslDelList.push(value.sendIdList) //插入数据   
+            } else {
+                context.state.pslDelList = value.sendIdList
+            }
             // 弹窗
             this._vm.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
                 confirmButtonText: '确定',
@@ -40,17 +44,19 @@ const personalAbout = {
                         type: 'success',
                         message: res.data.msg
                     });
-                    context.commit('DELETEPERSONAL', value.sendpage)  
-                
+                    context.commit('DELETEPERSONAL', value.sendpage)
+
                 })
             }).catch(() => {
                 this._vm.$message({
                     type: 'info',
                     message: '已取消删除'
-                });   
+                });
+                context.commit('ONDELETE')
             });
             // 在此处获取后端数据
         }
+        //4.删除选择
     },
     mutations: {
         CHANGE_KEYWORD(state, value) { // 搜索的数据
@@ -67,9 +73,12 @@ const personalAbout = {
             state.searchKeyword = ''
         },
         DELETEPERSONAL(state, value) {
-                // 删除成功调用action的方法
-                this.dispatch('personalAbout/getTableData',value)            
-                state.pslDelList = []
+            // 删除成功调用action的方法
+            this.dispatch('personalAbout/getTableData', value)
+            state.pslDelList = []
+        },
+        ONDELETE(state) {
+            state.pslDelList = []
         }
     },
     state: {

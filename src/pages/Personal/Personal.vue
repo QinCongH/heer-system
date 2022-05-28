@@ -14,7 +14,13 @@
           </div>
         </el-col>
         <el-col :md="6">
-          <el-button class="defaultBtn" type="primary" @click="searchPersoner(keyword)"> 查询 </el-button>
+          <el-button
+            class="defaultBtn"
+            type="primary"
+            @click="searchPersoner(keyword)"
+          >
+            查询
+          </el-button>
         </el-col>
       </el-row>
     </div>
@@ -30,6 +36,7 @@
             @selection-change="handleSelectionChange"
           >
             <el-table-column type="selection" width="55"> </el-table-column>
+
             <el-table-column prop="_id" label="id" width="220">
               <!-- <template slot-scope="scope">{{ scope.row.date }}</template> -->
             </el-table-column>
@@ -43,12 +50,15 @@
             </el-table-column>
             <el-table-column label="操作" width="220">
               <template scope="scope">
-              <el-button type="danger" size="mini" @click="deletePersonal(scope.row._id)"
-                ><i class="fa fa-trash-o" aria-hidden="true"></i> 删除
-              </el-button>
-              <el-button type="info" size="mini"
-                ><i class="fa fa-pencil" aria-hidden="true"></i> 编辑
-              </el-button>
+                <el-button
+                  type="danger"
+                  size="mini"
+                  @click="deletePersonal(scope.row._id)"
+                  ><i class="fa fa-trash-o" aria-hidden="true"></i> 删除
+                </el-button>
+                <el-button type="info" size="mini"
+                  ><i class="fa fa-pencil" aria-hidden="true"></i> 编辑
+                </el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -62,7 +72,7 @@
         </el-col>
         &nbsp;
         <el-col :md="3">
-          <el-button class="defaultBtn">删除选中</el-button>
+          <el-button class="defaultBtn" @click="delChose">删除选中</el-button>
         </el-col>
       </el-row>
     </div>
@@ -105,15 +115,16 @@ export default {
   data() {
     return {
       multipleSelection: [],
-      sendPage:1
+      sendPage: 1,
+      delData: [],
     };
   },
   methods: {
     //发送给vuex使用axios
     ...mapActions("personalAbout", {
       getTableData: "getTableData", //分页
-      searchPersoner:"searchPersoner", //搜索
-}),
+      searchPersoner: "searchPersoner", //搜索
+    }),
     //取消选择
     toggleSelection(rows) {
       if (rows) {
@@ -127,14 +138,36 @@ export default {
     //获取pag的页码
     getPage(page) {
       this.getTableData(page);
-      this.sendPage=page
+      this.sendPage = page;
     },
     // 删除
-    deletePersonal(val){
+    deletePersonal(val) {
       //传递一个对象
-      this.$store.dispatch('personalAbout/deletePersonal',{sendIdList:val,sendpage:this.sendPage})
+      this.$store.dispatch("personalAbout/deletePersonal", {
+        sendIdList: val,
+        sendpage: this.sendPage,
+        sogleDel: true,
+      });
     },
-    handleSelectionChange() {},
+    //删除选择
+    delChose() {
+      if (this.delData.length > 0) {
+        this.$store.dispatch("personalAbout/deletePersonal", {
+          sendIdList: this.delData,
+          sendpage: this.sendPage,
+          sogleDel: false,
+        });
+      }
+      return false;
+    },
+    handleSelectionChange(rows) {
+      //多选删除
+      // console.log(rows)
+      this.delData = rows.map((v, i) => {
+        return v._id;
+      });
+      // console.log(this.delData)
+    },
   },
 
   mounted() {

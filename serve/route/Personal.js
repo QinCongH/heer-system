@@ -60,6 +60,7 @@ router.get('/api/personer', async (req, res) => {
     })
     .post('/api/personer/delpersonal', async (req, res) => {
         let getIdList = req.body.data
+        console.log(getIdList);
         if (getIdList.length > 0) {
             // 删除
             let personalDel = await Register.remove({

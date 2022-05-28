@@ -76,7 +76,7 @@ export default {
           }, 300);
         })
         .catch((err) => {
-            return false
+          return false;
         });
     },
   },
@@ -144,11 +144,13 @@ export default {
     .exitLogin {
       opacity: 1;
       z-index: -1;
+      top: 40px;
     }
     box-shadow: 2px 3px 26px #dbd9d9;
   }
   .exitLogin {
     position: absolute;
+    top: 0;
     z-index: -1;
     width: 100%;
     height: 40px;
