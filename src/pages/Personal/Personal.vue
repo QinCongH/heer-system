@@ -88,7 +88,7 @@
         @current-change="getPage"
       />
     </div>
-    <coy-dialog :personalEdit="isDialog"></coy-dialog>
+    <coy-dialog :personalEdit="{sendPage,isDialog}"></coy-dialog>
   </div>
 </template>
 

@@ -15,6 +15,7 @@ const base = {
     // ----个人中心-----
     psrList:'myApi/api/personer'  ,         //分页字段查询
     prtAll:'myApi/api/personer/queryAll',    //查询所有
-    prtDel:'myApi/api/personer/delpersonal'         //删除
+    prtDel:'myApi/api/personer/delpersonal' ,        //删除
+    prtEdit:'myApi/api/personer/persoanlUpdata',    //更新
 }
 export default base

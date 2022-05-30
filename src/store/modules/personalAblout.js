@@ -55,8 +55,21 @@ const personalAbout = {
                 context.commit('ONDELETE')
             });
             // 在此处获取后端数据
+        },
+        //4.编辑
+        editPersonal(context, value) {
+            // console.log(value);
+            api.personalEditAll(value.editForm).then(res => {
+                if (res.data.msg == 'ok') {
+                    this._vm.$message({
+                        type: 'success',
+                        message: "更新成功！！"
+                    });
+                }
+                context.commit('EDITPERSONAL',value.sendpage)
+            })
+            //调用接口获取数据
         }
-        //4.删除选择
     },
     mutations: {
         CHANGE_KEYWORD(state, value) { // 搜索的数据
@@ -79,6 +92,10 @@ const personalAbout = {
         },
         ONDELETE(state) {
             state.pslDelList = []
+        },
+        EDITPERSONAL(state,value) {
+            state.isEdit = true
+            this.dispatch('personalAbout/getTableData', value)
         }
     },
     state: {
@@ -90,6 +107,7 @@ const personalAbout = {
         tableData: [],
         total: 0,
         pslDelList: [],
+        isEdit: false
     }
 }
 

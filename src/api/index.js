@@ -101,7 +101,15 @@ const api = {
         return axios.post(base.prtDel,{
             data
         })
-   }
+   },
+   /*
+   13.更新
+   */
+  personalEditAll(data){
+      return axios.post(base.prtEdit,{
+          data
+      })
+  }
 }
 
 export default api

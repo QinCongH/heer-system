@@ -6,6 +6,14 @@
       label-width="100px"
       class="demo-dynamic"
     >
+    <!-- id -->
+        <el-form-item
+        prop="_id"
+        label="id"
+        hidden
+      >
+        <el-input v-model="dynamicValidateForm._id"></el-input>
+      </el-form-item>
       <!-- 邮箱 -->
       <el-form-item
         prop="email"
@@ -40,8 +48,8 @@
         <el-button
           @click="resetForm('dynamicValidateForm')"
           style="float: right"
-          >重置</el-button
-        >
+          >重置
+        </el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -54,20 +62,11 @@ export default {
       dynamicValidateForm: {
         email: "",
         username: "",
+        _id:""
       },
     };
   },
   methods: {
-    submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          alert("submit!");
-        } else {
-          console.log("error submit!!");
-          return false;
-        }
-      });
-    },
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
@@ -76,6 +75,7 @@ export default {
         this.$nextTick(() => {
           this.dynamicValidateForm.email = val.email;
           this.dynamicValidateForm.username = val.username;
+          this.dynamicValidateForm._id = val._id;
         });
       });
     },

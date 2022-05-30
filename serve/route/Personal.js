@@ -65,18 +65,33 @@ router.get('/api/personer', async (req, res) => {
             // 删除
             let personalDel = await Register.remove({
                 "_id": { //$in字符选择查询_id字段带有61f91818353f2b794afef792，61f9190d6a50f6c0160e40a8的条件行
-                    $in:
-                        getIdList
-                    
+                    $in: getIdList
+
                 }
             })
             if (personalDel) {
                 res.status = 200
                 res.send({
-                    msg:'删除成功'
+                    msg: '删除成功'
                 })
             }
         }
     })
-
+    .post('/api/personer/persoanlUpdata', async (req, res) => {
+        let {
+            email,
+            username,
+            _id
+        } = req.body.data
+        let personalList = {
+            email,
+            username
+        }
+        let resPer = await Register.findByIdAndUpdate(_id, personalList)
+        if (resPer) {
+            res.send({
+                msg: 'ok'
+            })
+        }
+    })
 module.exports = router; //导出路由
